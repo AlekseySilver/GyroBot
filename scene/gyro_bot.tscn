@@ -1,0 +1,322 @@
+[gd_scene load_steps=28 format=3 uid="uid://cw423cxx7542e"]
+
+[ext_resource type="Script" path="res://script/player/AGyroBot.cs" id="1_lbhgm"]
+[ext_resource type="Texture2D" uid="uid://drsbau5vpe43r" path="res://icon.svg" id="2_2rmah"]
+[ext_resource type="Script" path="res://script/player/AGyroWheel.cs" id="2_7i1sq"]
+[ext_resource type="Script" path="res://script/player/AGyroBody.cs" id="2_ps856"]
+[ext_resource type="Script" path="res://script/player/AGyroBotAnimation.gd" id="2_wunch"]
+[ext_resource type="Script" path="res://script/player/ARigidBodyBase.cs" id="4_12dxj"]
+[ext_resource type="Script" path="res://script/player/AGyroSlider.cs" id="5_rvrq1"]
+[ext_resource type="Script" path="res://script/player/AGyroHinge.cs" id="6_1yfqe"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_g5lao"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_4f8br"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qr0om"]
+albedo_color = Color(0.294118, 0.294118, 0.294118, 1)
+albedo_texture = ExtResource("2_2rmah")
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 4.15
+emission_operator = 1
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_41j8m"]
+height = 0.712581
+radius = 0.6
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_w2auu"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_g3vo0"]
+radius = 0.408478
+height = 2.28145
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_jb10l"]
+radius = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_o5f2k"]
+albedo_texture = ExtResource("2_2rmah")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_npkry"]
+radius = 0.3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qd0nl"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_akpc7"]
+top_radius = 0.2
+bottom_radius = 0.2
+height = 0.5
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_rs7j3"]
+radius = 0.307746
+height = 0.85291
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ekdps"]
+radius = 0.194252
+height = 1.32335
+
+[sub_resource type="BoxMesh" id="BoxMesh_mlcaf"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_2x62j"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n68pl"]
+radius = 0.168144
+height = 1.23529
+
+[sub_resource type="BoxMesh" id="BoxMesh_6vlr5"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oom8c"]
+albedo_color = Color(0.576471, 0.380392, 1, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2sroe"]
+albedo_color = Color(1, 0.321569, 0.329412, 1)
+
+[node name="GyroBot" type="Node3D"]
+script = ExtResource("1_lbhgm")
+VoidCanonBallResource = "res://scene/void_canon_ball.tscn"
+VoidCanonBallSpeed = 30.0
+
+[node name="Animation" type="Node" parent="."]
+script = ExtResource("2_wunch")
+
+[node name="Wheel" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_layer = 128
+mass = 2.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("2_7i1sq")
+
+[node name="Shape" type="CollisionShape3D" parent="Wheel"]
+shape = SubResource("SphereShape3D_g5lao")
+
+[node name="Mesh" type="MeshInstance3D" parent="Wheel"]
+mesh = SubResource("SphereMesh_4f8br")
+surface_material_override/0 = SubResource("StandardMaterial3D_qr0om")
+
+[node name="Bottom" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.718202, 0)
+collision_layer = 128
+mass = 1.8
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="Bottom"]
+shape = SubResource("CylinderShape3D_41j8m")
+
+[node name="Mesh" type="MeshInstance3D" parent="Bottom"]
+transform = Transform3D(1.17, 0, 0, 0, 0.356731, 0, 0, 0, 1.17, 0, 0, 0)
+mesh = SubResource("CylinderMesh_w2auu")
+
+[node name="Body" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.72559, 0)
+collision_layer = 128
+mass = 1.6
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("2_ps856")
+GyroEnable = true
+
+[node name="Shape" type="CollisionShape3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.151802, 0)
+shape = SubResource("CapsuleShape3D_g3vo0")
+
+[node name="Mesh" type="MeshInstance3D" parent="Body"]
+mesh = SubResource("CapsuleMesh_jb10l")
+skeleton = NodePath("../../Bottom")
+surface_material_override/0 = SubResource("StandardMaterial3D_o5f2k")
+
+[node name="ShoulderMesh" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -1.13609e-08, 0.25991, -0.0988712)
+mesh = SubResource("CapsuleMesh_npkry")
+skeleton = NodePath("../../Bottom")
+surface_material_override/0 = SubResource("StandardMaterial3D_qd0nl")
+
+[node name="Mesh2" type="MeshInstance3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.11234, 0)
+mesh = SubResource("CylinderMesh_akpc7")
+skeleton = NodePath("../../Bottom")
+
+[node name="FP" type="Node3D" parent="Body"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.766847, 0.178193)
+
+[node name="ShoulderL" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, 0.566, 1.985, -0.099)
+collision_layer = 128
+mass = 1.4
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ShoulderL"]
+shape = SubResource("CapsuleShape3D_rs7j3")
+
+[node name="ShoulderR" type="RigidBody3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.565567, 1.9855, -0.0988712)
+collision_layer = 128
+mass = 1.4
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ShoulderR"]
+shape = SubResource("CapsuleShape3D_rs7j3")
+
+[node name="ArmUL" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.976, 1.49999, -0.110691)
+collision_layer = 128
+mass = 1.2
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ArmUL"]
+shape = SubResource("CapsuleShape3D_ekdps")
+
+[node name="Mesh4" type="MeshInstance3D" parent="ArmUL"]
+transform = Transform3D(0.3, 0, 0, 0, 1, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_mlcaf")
+skeleton = NodePath("../../Bottom")
+
+[node name="Mesh6" type="MeshInstance3D" parent="ArmUL"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, 0.42265, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="ArmUR" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.976417, 1.49999, -0.110691)
+collision_layer = 128
+mass = 1.2
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ArmUR"]
+shape = SubResource("CapsuleShape3D_ekdps")
+
+[node name="Mesh4" type="MeshInstance3D" parent="ArmUR"]
+transform = Transform3D(0.3, 0, 0, 0, 1, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_mlcaf")
+skeleton = NodePath("../../Bottom")
+
+[node name="Mesh6" type="MeshInstance3D" parent="ArmUR"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, 0.42265, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="ArmDL" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.976, 0.52173, -0.110691)
+collision_layer = 128
+collision_mask = 129
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ArmDL"]
+shape = SubResource("CapsuleShape3D_n68pl")
+
+[node name="Mesh5" type="MeshInstance3D" parent="ArmDL"]
+transform = Transform3D(0.3, 0, 0, 0, 1, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vlr5")
+skeleton = NodePath("../../Bottom")
+surface_material_override/0 = SubResource("StandardMaterial3D_oom8c")
+
+[node name="Mesh7" type="MeshInstance3D" parent="ArmDL"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, 0.494898, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="Mesh8" type="MeshInstance3D" parent="ArmDL"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, -0.424212, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="ArmDR" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.976417, 0.52173, -0.110691)
+collision_layer = 128
+collision_mask = 129
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("4_12dxj")
+
+[node name="Shape" type="CollisionShape3D" parent="ArmDR"]
+shape = SubResource("CapsuleShape3D_n68pl")
+
+[node name="Mesh5" type="MeshInstance3D" parent="ArmDR"]
+transform = Transform3D(0.3, 0, 0, 0, 1, 0, 0, 0, 0.3, 0, 0, 0)
+mesh = SubResource("BoxMesh_6vlr5")
+skeleton = NodePath("../../Bottom")
+surface_material_override/0 = SubResource("StandardMaterial3D_2sroe")
+
+[node name="Mesh7" type="MeshInstance3D" parent="ArmDR"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, 0.494898, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="Mesh8" type="MeshInstance3D" parent="ArmDR"]
+transform = Transform3D(0.44, 0, 0, 0, 0.44, 0, 0, 0, 0.44, -0.003061, -0.424212, 0)
+mesh = SubResource("SphereMesh_2x62j")
+skeleton = NodePath("../../Bottom")
+
+[node name="WheelPin" type="PinJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+node_a = NodePath("../Wheel")
+node_b = NodePath("../Bottom")
+
+[node name="BottomSlider" type="Generic6DOFJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.04, 0)
+node_a = NodePath("../Bottom")
+node_b = NodePath("../Body")
+linear_limit_y/upper_distance = 0.2
+linear_limit_y/lower_distance = -0.2
+linear_limit_y/softness = 1.5
+script = ExtResource("5_rvrq1")
+
+[node name="ShoulderLHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.985, 0)
+node_a = NodePath("../ShoulderL")
+node_b = NodePath("../Body")
+angular_limit/upper = 2.96706
+angular_limit/lower = -2.96706
+script = ExtResource("6_1yfqe")
+
+[node name="ShoulderRHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 1.985, 0)
+node_a = NodePath("../ShoulderR")
+node_b = NodePath("../Body")
+angular_limit/upper = 2.96706
+angular_limit/lower = -2.96706
+script = ExtResource("6_1yfqe")
+
+[node name="ArmULHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.976, 1.985, -0.111)
+node_a = NodePath("../ArmUL")
+node_b = NodePath("../ShoulderL")
+angular_limit/enable = true
+angular_limit/lower = 0.0
+script = ExtResource("6_1yfqe")
+
+[node name="ArmURHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -0.976, 1.985, -0.111)
+node_a = NodePath("../ArmUR")
+node_b = NodePath("../ShoulderR")
+angular_limit/enable = true
+angular_limit/lower = 0.0
+script = ExtResource("6_1yfqe")
+
+[node name="ArmDLHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.976, 1.01, -0.111)
+node_a = NodePath("../ArmDL")
+node_b = NodePath("../ArmUL")
+angular_limit/enable = true
+angular_limit/lower = 0.0
+script = ExtResource("6_1yfqe")
+
+[node name="ArmDRHinge" type="HingeJoint3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -0.976, 1.01, -0.111)
+node_a = NodePath("../ArmDR")
+node_b = NodePath("../ArmUR")
+angular_limit/enable = true
+angular_limit/lower = 0.0
+script = ExtResource("6_1yfqe")

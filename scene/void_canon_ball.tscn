@@ -1,0 +1,47 @@
+[gd_scene load_steps=6 format=3 uid="uid://y7paxnatx0th"]
+
+[ext_resource type="Script" path="res://script/player/AVoidCanonBall.cs" id="1_tswsp"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fkbxb"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_c1l1b"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_u5ry3"]
+
+[sub_resource type="Curve" id="Curve_60sam"]
+_data = [Vector2(0.00338983, 0.0218878), 0.0, 24.6573, 0, 0, Vector2(0.142373, 0.982216), 0.0, 0.0, 0, 0, Vector2(0.99322, 0.0396717), -3.84724, 0.0, 0, 0]
+point_count = 3
+
+[node name="VoidCanonBall" type="RigidBody3D"]
+collision_layer = 2
+collision_mask = 3
+gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_tswsp")
+ImpactRadius = 7.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_fkbxb")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("SphereMesh_c1l1b")
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="."]
+cast_shadow = 0
+emitting = false
+amount = 50
+one_shot = true
+explosiveness = 1.0
+mesh = SubResource("BoxMesh_u5ry3")
+emission_shape = 1
+emission_sphere_radius = 7.5
+spread = 180.0
+gravity = Vector3(0, 0.01, 0)
+linear_accel_min = -47.13
+linear_accel_max = -19.11
+tangential_accel_min = 52.23
+tangential_accel_max = 52.23
+scale_amount_curve = SubResource("Curve_60sam")
+
+[connection signal="finished" from="CPUParticles3D" to="." method="_on_cpu_particles_3d_finished"]
